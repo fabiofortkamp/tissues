@@ -1,11 +1,11 @@
 [project]
 name = "tissues"
 version = "0.1.0"
-description = "Add your description here"
+description = "Count the number ruff issues, report error if bigger than previous run"
 authors = [
     { name = "Fábio P. Fortkamp", email = "fabio@fabiofortkamp.com" }
 ]
-dependencies = []
+dependencies = ["ruff"]
 readme = "README.md"
 requires-python = ">= 3.8"
 license = { text = "MIT" }

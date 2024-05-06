@@ -19,6 +19,13 @@ You'll probably want to gitignore this file.
 
 The file will not be written if `ruff` cannot be run for some reason (i.e. some
 error other than lint violations).
+
+## Installation
+Run that in the desired environment:
+
+```shell
+pip install git+https://github.com/fabiofortkamp/tissues@main
+```
 ## References
 
 [1]: Wilson, Christie. Grokking Continuous Delivery. Shelter Island: Manning Publications, 2022.

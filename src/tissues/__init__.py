@@ -41,7 +41,7 @@ def main() -> int:
         f.write(str(n_issues_new))
 
     # if the number of issues has increased, print the output and return 1
-    if n_issues_new > n_issues_old:
+    if n_issues_new >= n_issues_old:
         return 1
 
     return 0

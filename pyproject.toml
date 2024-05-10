@@ -1,14 +1,18 @@
 [project]
 name = "tissues"
 version = "0.2.0"
-description = "Count the number ruff issues, report error if bigger than previous run"
+description = "Count the number of linter issues, report error if bigger than previous run"
 authors = [
     { name = "Fábio P. Fortkamp", email = "fabio@fabiofortkamp.com" }
 ]
 dependencies = ["typer"]
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 license = { text = "MIT" }
+
+[project.urls]
+homepage = "https://github.com/fabiofortkamp/tissues"
+issues = "https://github.com/fabiofortkamp/tissues/issues"
 
 [project.scripts]
 "tissues" = "tissues.__main__:cli"

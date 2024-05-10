@@ -33,6 +33,9 @@ def main(
     n_issues_new = len(lines)
     if command_output:
         print(command_output, file=sys.stdout)
+    if n_issues_new == 0:
+        print("No issues found.", file=sys.stderr)
+        raise typer.Exit(0)
 
     issues_filename = f".{command.split()[0]}-issues"
     # read the number of issues from the previous run
@@ -48,6 +51,6 @@ def main(
 
     # if the number of issues has increased, print the output and return 1
     if n_issues_new >= n_issues_old:
-        return 1
-
-    return 0
+        print("Number of issues did not decrease from "
+            f"{n_issues_old} to {n_issues_new}.", file=sys.stderr)
+        raise typer.Exit(1)

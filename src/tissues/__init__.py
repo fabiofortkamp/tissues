@@ -2,42 +2,44 @@
 
 import subprocess
 import sys
+from typing import Annotated
+import typer
 
-ISSUES_FILENAME = ".ruff.issues"
-RUFF_COMMAND_ARGS = ["ruff", "check", "--fix", "--quiet", "--exit-zero"]
+DEFAULT_COMMAND_ARGS = ["ruff", "check", "--fix", "--quiet", "--exit-zero"]
 
 
-def main() -> int:
-    
-    # run the ruff command, appending the first command line argument to it
-    command = RUFF_COMMAND_ARGS + sys.argv[1:]
-    ruff_process = subprocess.run(
-        command, capture_output=True, text=True
+def main(command: Annotated[
+            str,
+         typer.Option(help="The command to run")]=" ".join(DEFAULT_COMMAND_ARGS)):
+    command_to_run = command.split() +  sys.argv[1:]
+    command_process = subprocess.run(
+        command_to_run, capture_output=True, text=True
     )
 
-    if ruff_process.returncode != 0:
-        print("Could not run ruff command", file=sys.stderr)
-        return 1
+    if command_process.returncode != 0:
+        print("Could not run linter command", file=sys.stderr)
+        raise typer.Exit(1)
 
     ## count the number of lines in the output buffer
-    ruff_output = ruff_process.stdout
-    lines = ruff_output.split("\n")
+    command_output = command_process.stdout
+    lines = command_output.split("\n")
     # remove empty strings from the list
     lines = [line for line in lines if line]
 
     n_issues_new = len(lines)
-    if ruff_output:
-        print(ruff_output, file=sys.stdout)
+    if command_output:
+        print(command_output, file=sys.stdout)
 
+    issues_filename = f".{command.split()[0]}-issues"
     # read the number of issues from the previous run
     try:
-        with open(ISSUES_FILENAME, "r") as f:
+        with open(issues_filename, "r") as f:
             n_issues_old = int(f.read())
     except Exception:
         n_issues_old = 0
 
     # write the number of issues from the current run
-    with open(ISSUES_FILENAME, "w") as f:
+    with open(issues_filename, "w") as f:
         f.write(str(n_issues_new))
 
     # if the number of issues has increased, print the output and return 1

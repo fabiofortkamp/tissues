@@ -20,8 +20,8 @@ def main(
     command_process = subprocess.run(command_to_run, capture_output=True, text=True)
 
     if command_process.stderr != "":
-        print(command_process)
-        print("Could not run linter command", file=sys.stderr)
+        print("Could not run linter command:", file=sys.stderr)
+        print(command_process.stderr, file=sys.stderr)
         raise typer.Exit(1)
 
     ## count the number of lines in the output buffer

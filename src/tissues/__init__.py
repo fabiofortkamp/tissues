@@ -2,7 +2,7 @@
 
 import subprocess
 import sys
-from typing import Annotated
+from typing import Annotated, List
 
 import typer
 
@@ -10,16 +10,17 @@ DEFAULT_COMMAND_ARGS = ["ruff", "check", "--fix", "--quiet", "--exit-zero"]
 
 
 def main(
-    path: Annotated[str, typer.Argument(help="Path to the file(s) to check")],
+    path: Annotated[List[str], typer.Argument(help="Path to the file(s) to check")],
     command: Annotated[str, typer.Option(help="The command to run")] = " ".join(
         DEFAULT_COMMAND_ARGS
     ),
 ):
     """Run given command and check if the number of issues has increased."""
-    command_to_run = command.split() + [path]
+    command_to_run = command.split() + path
     command_process = subprocess.run(command_to_run, capture_output=True, text=True)
 
-    if command_process.returncode != 0:
+    if command_process.stderr != "":
+        print(command_process)
         print("Could not run linter command", file=sys.stderr)
         raise typer.Exit(1)
 

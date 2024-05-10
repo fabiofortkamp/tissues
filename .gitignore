@@ -9,3 +9,5 @@ wheels/
 # venv
 .venv
 .ruff.issues
+.mypy-issues
+.ruff-issues

@@ -1,20 +1,23 @@
-"""Main module for the tissues package."""
+"""tissues - A tool to check if the number of issues has increased."""
 
 import subprocess
 import sys
 from typing import Annotated
+
 import typer
 
 DEFAULT_COMMAND_ARGS = ["ruff", "check", "--fix", "--quiet", "--exit-zero"]
 
 
-def main(command: Annotated[
-            str,
-         typer.Option(help="The command to run")]=" ".join(DEFAULT_COMMAND_ARGS)):
-    command_to_run = command.split() +  sys.argv[1:]
-    command_process = subprocess.run(
-        command_to_run, capture_output=True, text=True
-    )
+def main(
+    path: Annotated[str, typer.Argument(help="Path to the file(s) to check")],
+    command: Annotated[str, typer.Option(help="The command to run")] = " ".join(
+        DEFAULT_COMMAND_ARGS
+    ),
+):
+    """Run given command and check if the number of issues has increased."""
+    command_to_run = command.split() + [path]
+    command_process = subprocess.run(command_to_run, capture_output=True, text=True)
 
     if command_process.returncode != 0:
         print("Could not run linter command", file=sys.stderr)
@@ -33,7 +36,7 @@ def main(command: Annotated[
     issues_filename = f".{command.split()[0]}-issues"
     # read the number of issues from the previous run
     try:
-        with open(issues_filename, "r") as f:
+        with open(issues_filename) as f:
             n_issues_old = int(f.read())
     except Exception:
         n_issues_old = 0

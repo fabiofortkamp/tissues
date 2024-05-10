@@ -1,4 +1,9 @@
-import tissues
-import sys
+"""Main module for the tissues package."""
+import typer
 
-sys.exit(tissues.main())
+import tissues
+
+
+def cli():
+    """Main entry point for the tissues package."""
+    typer.run(tissues.main)

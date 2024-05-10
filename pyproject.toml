@@ -1,28 +1,36 @@
 [project]
 name = "tissues"
-version = "0.1.0"
+version = "0.2.0"
 description = "Count the number ruff issues, report error if bigger than previous run"
 authors = [
     { name = "Fábio P. Fortkamp", email = "fabio@fabiofortkamp.com" }
 ]
-dependencies = ["ruff"]
+dependencies = ["typer"]
 readme = "README.md"
 requires-python = ">= 3.8"
 license = { text = "MIT" }
 
 [project.scripts]
-"tissues" = "tissues:main"
+"tissues" = "tissues.__main__:cli"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = []
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tissues"]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+    "pytest>=7"
+]
+
+[tool.pyright]
+executionEnvironments = [{ root = "src" }]
+venvPath = "."
+venv = ".venv"
